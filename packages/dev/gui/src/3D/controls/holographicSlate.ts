@@ -1,27 +1,29 @@
-import { ContentDisplay3D } from "./contentDisplay3D";
+import { PointerDragBehavior } from 'core/Behaviors/Meshes/pointerDragBehavior';
+import { Vector4 } from 'core/Maths/math';
+import { Epsilon } from 'core/Maths/math.constants';
+import { Scalar } from 'core/Maths/math.scalar';
+import { Quaternion, Vector2, Vector3 } from 'core/Maths/math.vector';
+import { Viewport } from 'core/Maths/math.viewport';
+import { CreateBox } from 'core/Meshes/Builders/boxBuilder';
+import { CreatePlane } from 'core/Meshes/Builders/planeBuilder';
+import { Mesh } from 'core/Meshes/mesh';
+import { VertexData } from 'core/Meshes/mesh.vertexData';
+
+import { AdvancedDynamicTexture } from '../../2D/advancedDynamicTexture';
+import { Control } from '../../2D/controls/control';
+import { TextBlock, TextWrapping } from '../../2D/controls/textBlock';
+import { DefaultBehavior } from '../behaviors/defaultBehavior';
+import { SlateGizmo } from '../gizmos/slateGizmo';
+import { FluentMaterial } from '../materials/fluent/fluentMaterial';
+import { FluentBackplateMaterial } from '../materials/fluentBackplate/fluentBackplateMaterial';
+import { ContentDisplay3D } from './contentDisplay3D';
+import { TouchHolographicButton } from './touchHolographicButton';
+
 import type { Control3D } from "./control3D";
-import { TouchHolographicButton } from "./touchHolographicButton";
-import { AdvancedDynamicTexture } from "../../2D/advancedDynamicTexture";
-import { Control } from "../../2D/controls/control";
-import { TextBlock, TextWrapping } from "../../2D/controls/textBlock";
-import { DefaultBehavior } from "../behaviors/defaultBehavior";
-import { SlateGizmo } from "../gizmos/slateGizmo";
-import { FluentMaterial } from "../materials/fluent/fluentMaterial";
-import { FluentBackplateMaterial } from "../materials/fluentBackplate/fluentBackplateMaterial";
-import { PointerDragBehavior } from "core/Behaviors/Meshes/pointerDragBehavior";
 import type { Texture } from "core/Materials/Textures/texture";
-import { Vector4 } from "core/Maths/math";
-import { Epsilon } from "core/Maths/math.constants";
-import { Scalar } from "core/Maths/math.scalar";
 import type { Matrix } from "core/Maths/math.vector";
-import { Quaternion, Vector2, Vector3 } from "core/Maths/math.vector";
-import { Viewport } from "core/Maths/math.viewport";
 import type { AbstractMesh } from "core/Meshes/abstractMesh";
-import { CreateBox } from "core/Meshes/Builders/boxBuilder";
-import { CreatePlane } from "core/Meshes/Builders/planeBuilder";
 import type { TransformNode } from "core/Meshes/transformNode";
-import { Mesh } from "core/Meshes/mesh";
-import { VertexData } from "core/Meshes/mesh.vertexData";
 import type { Observer } from "core/Misc/observable";
 import type { Scene } from "core/scene";
 import type { Nullable } from "core/types";
@@ -404,7 +406,8 @@ export class HolographicSlate extends ContentDisplay3D {
 
             // By default, content takes full width available and height is cropped to keep aspect ratio
             this._contentViewport.x = Scalar.Clamp(startViewport.x - offset.x, 0, 1 - this._contentViewport.width * this._contentScaleRatio);
-            this._contentViewport.y = Scalar.Clamp(startViewport.y - offset.y, 0, 1 - this._contentViewport.height * this._contentScaleRatio);
+            this._contentViewport.y = Scalar.Clamp(startViewport.y - offset.y, 1 - this._contentViewport.height / this._contentViewport.width, 1 - this._contentViewport.height * this._contentScaleRatio);
+            
             this._applyContentViewport();
         });
     }
