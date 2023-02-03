@@ -54,6 +54,17 @@ export class HolographicSlate extends ContentDisplay3D {
     public titleBarMargin = 0.005;
 
     /**
+     * Override default titlebar material
+     */
+    public overrideTitleBarMaterial:FluentBackplateMaterial | null = null;
+
+    /**
+     * Override default backplate material
+     */
+    public overrideBackMaterial:FluentBackplateMaterial |null = null;
+
+
+    /**
      * Origin in local coordinates (top left corner)
      */
     public origin = new Vector3(0, 0, 0);
@@ -90,7 +101,8 @@ export class HolographicSlate extends ContentDisplay3D {
     protected _backPlate: Mesh;
     /** @internal */
     public _followButton: TouchHolographicButton;
-    protected _closeButton: TouchHolographicButton;
+    /** @internal */
+    public _closeButton: TouchHolographicButton;
     protected _contentScaleRatio = 1;
 
     /**
@@ -414,12 +426,12 @@ export class HolographicSlate extends ContentDisplay3D {
 
     protected _affectMaterial(mesh: AbstractMesh) {
         // TODO share materials
-        this._titleBarMaterial = new FluentBackplateMaterial(`${this.name} plateMaterial`, mesh.getScene());
+        this._titleBarMaterial = this.overrideTitleBarMaterial ? this.overrideTitleBarMaterial : new FluentBackplateMaterial(`${this.name} plateMaterial`, mesh.getScene());
 
         this._contentMaterial = new FluentMaterial(`${this.name} contentMaterial`, mesh.getScene());
         this._contentMaterial.renderBorders = true;
 
-        this._backMaterial = new FluentBackplateMaterial(`${this.name} backPlate`, mesh.getScene());
+        this._backMaterial = this.overrideBackMaterial ? this.overrideBackMaterial : new FluentBackplateMaterial(`${this.name} backPlate`, mesh.getScene());
         this._backMaterial.lineWidth = Epsilon;
         this._backMaterial.radius = 0.005;
         this._backMaterial.backFaceCulling = true;

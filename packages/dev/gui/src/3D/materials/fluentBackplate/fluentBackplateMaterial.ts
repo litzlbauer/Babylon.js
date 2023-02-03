@@ -1,28 +1,28 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { Nullable } from "core/types";
-import { SerializationHelper, serialize, serializeAsVector3 } from "core/Misc/decorators";
+import './shaders/fluentBackplate.fragment';
+import './shaders/fluentBackplate.vertex';
+
+import { VertexBuffer } from 'core/Buffers/buffer';
+import { Constants } from 'core/Engines/constants';
+import { EffectFallbacks } from 'core/Materials/effectFallbacks';
+import { MaterialDefines } from 'core/Materials/materialDefines';
+import { MaterialHelper } from 'core/Materials/materialHelper';
+import { PushMaterial } from 'core/Materials/pushMaterial';
+import { Texture } from 'core/Materials/Textures/texture';
+import { Color4 } from 'core/Maths/math.color';
+import { Vector3, Vector4 } from 'core/Maths/math.vector';
+import { SerializationHelper, serialize, serializeAsVector3 } from 'core/Misc/decorators';
+import { RegisterClass } from 'core/Misc/typeStore';
+
 import type { Matrix } from "core/Maths/math.vector";
-import { Vector3, Vector4 } from "core/Maths/math.vector";
 import type { IAnimatable } from "core/Animations/animatable.interface";
 import type { BaseTexture } from "core/Materials/Textures/baseTexture";
-import { Texture } from "core/Materials/Textures/texture";
-import { MaterialDefines } from "core/Materials/materialDefines";
-import { MaterialHelper } from "core/Materials/materialHelper";
 import type { IEffectCreationOptions } from "core/Materials/effect";
-import { PushMaterial } from "core/Materials/pushMaterial";
-import { VertexBuffer } from "core/Buffers/buffer";
 import type { AbstractMesh } from "core/Meshes/abstractMesh";
 import type { SubMesh } from "core/Meshes/subMesh";
 import type { Mesh } from "core/Meshes/mesh";
 import type { Scene } from "core/scene";
-import { RegisterClass } from "core/Misc/typeStore";
-import { Color4 } from "core/Maths/math.color";
-import { EffectFallbacks } from "core/Materials/effectFallbacks";
-import { Constants } from "core/Engines/constants";
-
-import "./shaders/fluentBackplate.fragment";
-import "./shaders/fluentBackplate.vertex";
-
 /** @internal */
 class FluentBackplateMaterialDefines extends MaterialDefines {
     public BLOB_ENABLE = true;
@@ -219,13 +219,16 @@ export class FluentBackplateMaterial extends PushMaterial {
     public globalRightIndexTipPosition = Vector3.Zero();
     private _globalRightIndexTipPosition4 = Vector4.Zero();
 
-    constructor(name: string, scene?: Scene) {
+    constructor(name: string, scene?: Scene, options?: { blob_texture_url?: string; im_texture_url?: string;}) {
         super(name, scene);
         this.alphaMode = Constants.ALPHA_DISABLE;
         this.backFaceCulling = false;
 
-        this._blobTexture = new Texture(FluentBackplateMaterial.BLOB_TEXTURE_URL, this.getScene(), true, false, Texture.NEAREST_SAMPLINGMODE);
-        this._iridescentMap = new Texture(FluentBackplateMaterial.IM_TEXTURE_URL, this.getScene(), true, false, Texture.NEAREST_SAMPLINGMODE);
+        const blob_texture_url: string = options && options.blob_texture_url ? options.blob_texture_url : FluentBackplateMaterial.BLOB_TEXTURE_URL;
+        const im_texture_url: string = options && options.im_texture_url ? options.im_texture_url : FluentBackplateMaterial.IM_TEXTURE_URL;
+
+        this._blobTexture = new Texture(blob_texture_url, this.getScene(), true, false, Texture.NEAREST_SAMPLINGMODE);
+        this._iridescentMap = new Texture(im_texture_url, this.getScene(), true, false, Texture.NEAREST_SAMPLINGMODE);
     }
 
     public needAlphaBlending(): boolean {

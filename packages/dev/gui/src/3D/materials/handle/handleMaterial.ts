@@ -1,13 +1,13 @@
-import { ShaderMaterial } from "core/Materials/shaderMaterial";
+import './shaders/handle.vertex';
+import './shaders/handle.fragment';
+
+import { ShaderMaterial } from 'core/Materials/shaderMaterial';
+import { Color3, TmpColors } from 'core/Maths/math.color';
+import { Vector3 } from 'core/Maths/math.vector';
+
 import type { Scene } from "core/scene";
 import type { Nullable } from "core/types";
 import type { Observer } from "core/Misc/observable";
-import { Color3, TmpColors } from "core/Maths/math.color";
-import { Vector3 } from "core/Maths/math.vector";
-
-import "./shaders/handle.vertex";
-import "./shaders/handle.fragment";
-
 /**
  * Class used to render gizmo handles with fluent design
  */
@@ -55,7 +55,7 @@ export class HandleMaterial extends ShaderMaterial {
     /**
      * Color of the handle when hovered
      */
-    public hoverColor: Color3 = new Color3(0, 0.467, 0.84);
+    public hoverColor: Color3 = new Color3(0, 0.683, 0.793); //new Color3(0, 0.467, 0.84);
 
     /**
      * Color of the handle when idle
