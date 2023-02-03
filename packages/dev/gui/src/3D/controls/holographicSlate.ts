@@ -375,6 +375,13 @@ export class HolographicSlate extends ContentDisplay3D {
         return node;
     }
 
+    /** set visibility */
+    public setIsVisible(value: boolean) 
+    {
+        this.isVisible = value;
+        this._gizmo.isVisible = value;
+    }
+
     private _attachContentPlateBehavior() {
         this._contentDragBehavior.attach(this._contentPlate);
         this._contentDragBehavior.moveAttached = false;

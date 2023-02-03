@@ -376,6 +376,20 @@ export class SlateGizmo extends Gizmo {
         }
     }
 
+    /** set visibility */
+    set isVisible(value: boolean) 
+    {
+        for (let i = 0; i < this._corners.length; i++)
+        {
+            this._corners[i].node.setEnabled(value);
+        }
+
+        for (let i = 0; i < this._corners.length; i++)
+        {
+            this._sides[i].node.setEnabled(value);
+        }
+    }
+
     private _updateHandlesPosition() {
         const min = this._boundingBoxGizmo.min.clone();
         const max = this._boundingBoxGizmo.max.clone();
